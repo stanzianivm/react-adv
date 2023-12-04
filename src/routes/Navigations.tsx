@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route, NavLink, Navigate } from "react-router-dom";
+import { routes } from "./routes";
 
 import logo from "../logo.svg";
-import { routes } from "./routes";
 
 export const Navigations = () => {
   return (
@@ -14,15 +14,15 @@ export const Navigations = () => {
             <nav>
               <img src={logo} alt="React Logo" />
               <ul>
-                {routes.map((route) => (
-                  <li key={route.to}>
+                {routes.map(({ to, name }) => (
+                  <li key={to}>
                     <NavLink
-                      to={route.to}
+                      to={to}
                       className={({ isActive }) =>
                         isActive ? "nav-active" : ""
                       }
                     >
-                      {route.name}
+                      {name}
                     </NavLink>
                   </li>
                 ))}
@@ -30,13 +30,10 @@ export const Navigations = () => {
             </nav>
 
             <Routes>
-              {routes.map((route) => (
-                <Route
-                  key={route.to}
-                  path={route.path}
-                  element={<route.Component />}
-                />
-              ))}
+              {routes.map(({ path, Component }) => {
+                console.log(path);
+                return <Route key={path} path={path} element={<Component />} />;
+              })}
 
               <Route
                 path="/*"
